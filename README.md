@@ -6,6 +6,7 @@ source venv/bin/activate
 ```
 2. Instalar dependencias:
 ```
+cd backend
 pip install -r requirements.txt
 ```
 3. Correr backend:
