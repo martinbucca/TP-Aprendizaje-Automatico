@@ -7,3 +7,5 @@ langchain-openai
 neo4j
 json-repair
 pypdf
+flask
+flask-cors

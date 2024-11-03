@@ -89,8 +89,8 @@ chunk_retriever = create_retrieval_chain(
 )
 
 def find_chunk(q):
+    print("Finding similarities for query: ", q)
     return chunk_retriever.invoke({"input": q})["answer"]
 
 
 
-print(find_chunk("Tengo que saber frances para poder presentarme?"))

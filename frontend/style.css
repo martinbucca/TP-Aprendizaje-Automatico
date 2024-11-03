@@ -1,0 +1,107 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f6f9;
+}
+
+.chat-container {
+    width: 80%; /* Ancho del contenedor */
+    max-width: 800px; /* Ancho máximo */
+    height: 500px; /* Altura */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    background-color: #4a90e2;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    display: flex; /* Permitir que la imagen y el texto estén en línea */
+    align-items: center; /* Alinear verticalmente */
+}
+
+.chat-icon {
+    width: 35px; /* Ajusta el tamaño de la imagen */
+    height: 35px; /* Mantiene la proporción de la imagen */
+    margin-right: 10px; /* Espacio entre la imagen y el texto */
+}
+
+.chat-box {
+    padding: 15px;
+    flex: 1; /* Permite que el chat-box tome el espacio restante */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+#query-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+#send-btn {
+    padding: 10px 15px;
+    background-color: #4a90e2;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#send-btn:hover {
+    background-color: #357ab8;
+}
+
+/* Chat Message Styles */
+.message {
+    margin-bottom: 10px;
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 18px;
+    color: #fff;
+    line-height: 1.4;
+}
+
+.user-message {
+    background-color: #4a90e2;
+    align-self: flex-end;
+}
+
+.bot-message {
+    background-color: #e2e3e5;
+    color: #333;
+    align-self: flex-start;
+}
+
+/* Spinner Styles */
+.spinner {
+    color: #666;
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    display: none; /* Ocultar inicialmente el spinner */
+}
