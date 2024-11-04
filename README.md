@@ -1,4 +1,7 @@
-![RAG Chatbot](./chatbot.png)
+<p align="center">
+  <img src="./chatbot.png" alt="Chatbot" width="45%" />
+  <img src="./graph.png" alt="Graph" width="45%" />
+</p>
 
 ## Creacion del grafo Neo4j
 1. Se cargan todos los documentos PDF que se encuentren en `./backend/documents`
