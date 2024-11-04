@@ -1,23 +1,34 @@
-from flask import Flask, request, jsonify
+from fastapi import FastAPI, Request, HTTPException
+from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 from vector_rag import find_chunk
-from flask_cors import CORS
 
+app = FastAPI()
 
-app = Flask(__name__)
-CORS(app)  # Esto habilita CORS para todas las rutas
+# Habilita CORS para todas las rutas
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Puedes especificar dominios permitidos aquí en vez de "*"
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-
+# Modelo de datos para la solicitud
+class QueryRequest(BaseModel):
+    query: str
 
 # Endpoint para recibir queries del frontend
-@app.route('/find_chunk', methods=['POST'])
-def find_chunk_endpoint():
-    data = request.get_json()
-    query = data.get("query")
+@app.post("/find_chunk")
+async def find_chunk_endpoint(request: QueryRequest):
+    query = request.query
     if query:
         answer = find_chunk(query)
-        return jsonify({"answer": answer})
+        return {"answer": answer}
     else:
-        return jsonify({"answer": "No se ingresó una consulta válida."}), 400
+        raise HTTPException(status_code=400, detail="No se ingresó una consulta válida.")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Solo es necesario si quieres correr el servidor directamente con Python, aunque normalmente usarías uvicorn
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=5000, log_level="info")
