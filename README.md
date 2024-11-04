@@ -1,3 +1,5 @@
+![RAG Chatbot](./chatbot.png)
+
 ## Creacion del grafo Neo4j
 1. Se cargan todos los documentos PDF que se encuentren en `./backend/documents`
 2. Se divide cada documento en chunks
