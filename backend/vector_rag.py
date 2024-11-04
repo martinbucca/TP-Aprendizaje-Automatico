@@ -80,6 +80,7 @@ class VectorRetriever:
         "Brinda ayuda a los estudiantes de Ingenieria Informatica de la Universidad de Buenos Aires (Facultad de Ingenieria) respondiendo sobre las materias de la carrera."
         "Responde conscisamente y con contexto a la pregunta."
         "Utiliza el contexto para obtener informacion relevante a la pregunta."
+        "Si tu respuesta tiene items, formatealos como una lista para que puedan ser renderizados en un frontend react correctamente."
         "Si no sabes la respuesta o te falta contexto, deci que no sabes."
         "Contexto: {context}"
         )
