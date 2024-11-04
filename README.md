@@ -18,5 +18,6 @@ python3 main.py
 4. Correr frontend:
 ```
 cd frontend
+npm install
 npm start
 ```
