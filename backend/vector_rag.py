@@ -17,6 +17,13 @@ NUMBER_OF_DOCUMENTS_RETRIEVED = 3
 EMBEDDINGS_MODEL = "sentence-transformers/msmarco-distilbert-base-tas-b"
 MODEL_NAME="mixtral-8x7b-32768"
 
+PROMPT = """Brinda ayuda a los estudiantes de Ingenieria Informatica de la Universidad de Buenos Aires (Facultad de Ingenieria) 
+respondiendo sobre las materias de la carrera.
+Responde conscisamente y con contexto a la pregunta.
+Utiliza el contexto para obtener informacion relevante a la pregunta.
+Si tu respuesta tiene items, formatealos como una lista para que puedan ser renderizados en un frontend react correctamente.
+Si no sabes la respuesta o te falta contexto, deci que no sabes.
+"""
 
 class VectorRetriever:
     def __init__(self):
@@ -77,12 +84,7 @@ class VectorRetriever:
         )
     def prompt(self):
         instructions = (
-        "Brinda ayuda a los estudiantes de Ingenieria Informatica de la Universidad de Buenos Aires (Facultad de Ingenieria) respondiendo sobre las materias de la carrera."
-        "Responde conscisamente y con contexto a la pregunta."
-        "Utiliza el contexto para obtener informacion relevante a la pregunta."
-        "Si tu respuesta tiene items, formatealos como una lista para que puedan ser renderizados en un frontend react correctamente."
-        "Si no sabes la respuesta o te falta contexto, deci que no sabes."
-        "Contexto: {context}"
+        PROMPT + "\n\n" + "Contexto: {context}"
         )
 
         return ChatPromptTemplate.from_messages(
