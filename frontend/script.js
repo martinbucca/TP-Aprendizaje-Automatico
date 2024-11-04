@@ -12,7 +12,7 @@ document.getElementById('send-btn').addEventListener('click', async () => {
     document.getElementById('loading-spinner').style.display = 'block';
 
     try {
-        const response = await fetch('http://127.0.0.1:5000/find_chunk', {
+        const response = await fetch('http://localhost:5000/find_chunk', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
