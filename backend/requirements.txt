@@ -8,4 +8,8 @@ neo4j
 json-repair
 pypdf
 fastapi
+<<<<<<< HEAD
 uvicorn
+=======
+uvicorn
+>>>>>>> frontend
