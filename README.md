@@ -21,7 +21,12 @@
  
 
 ## Como correr
-1. Crear archivo `.env` y reemplzar los valores reales (mirar `.env.example`) 
+
+
+
+1. Crear archivo `.env` y reemplzar los valores reales (mirar `.env.example`):
+     - [Obtener Groq Api Key](https://console.groq.com/keys) y setearla en .env 
+     - [Crear instancia Neo4j Aura](https://neo4j.com/docs/aura/auradb/getting-started/create-database/#:~:text=To%20create%20an%20AuraDB%20Virtual,storage%20allocated%20to%20the%20instance.) y setear credenciales en .env:
 2. Activar virtual env:
 ```
 cd backend
