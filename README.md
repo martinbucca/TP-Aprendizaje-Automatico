@@ -13,6 +13,11 @@
 7. Utilizando [`LLMGraphTransformer`](https://python.langchain.com/v0.1/docs/use_cases/graph/constructing/#llm-graph-transformer), se extraen entidades y relaciones por cada chunk y se agregan al grafo Neo4j. Cada entidad se relaciona con el chunk del cual fue extraida con una relacion del tipo `(Chunk)-HAS_ENTITY->(Entity)`. Las entidades pueden tener relaciones entre sí dependiendo como la LLM haya decidido extraerlas/crearlas.
 8. Se crea el `Vector Index` el cual va a ser consultado para buscar similitudes entre la query del usuario y los embeddings generados para cada chunk previamente. Se utiliza la funcion de similaridad `Cosine`.
 
+### Para crear el grafo a partir de los documentos PDF que haya en ./backend/documents, se tiene que levantar el backend y pegarle al endpoint con curl:
+```
+curl -X POST http://127.0.0.1:5000/create_kg -H "Content-Type: application/json"
+```
+
 ## Vector Rag
 1. Por cada pregunta/query ingresada por el usario se obtiene el embedding, utilizando el mismo proveedor de embeddings utilizado para crear los embeddings de los chunks de cada documento (HugginFace, modelo sentence-transformers/msmarco-distilbert-base-tas-b y una dimension de 768).
 2. El Vector Index de Neo4j al recibir el embedding busca en su Indice por el top K de vectores mas cercanos. El top k es una constante setteada en 3, que puede ser modificada (NUMBER_OF_DOCUMENTS_RETRIEVED = 3).
@@ -21,7 +26,12 @@
  
 
 ## Como correr
-1. Crear archivo `.env` y reemplzar los valores reales (mirar `.env.example`) 
+
+
+
+1. Crear archivo `.env` y reemplzar los valores reales (mirar `.env.example`):
+     - [Obtener Groq Api Key](https://console.groq.com/keys) y setearla en .env 
+     - [Crear instancia Neo4j Aura](https://neo4j.com/docs/aura/auradb/getting-started/create-database/#:~:text=To%20create%20an%20AuraDB%20Virtual,storage%20allocated%20to%20the%20instance.) y setear credenciales en .env:
 2. Activar virtual env:
 ```
 cd backend
