@@ -21,6 +21,7 @@ PROMPT = """Brinda ayuda a los estudiantes de Ingenieria Informatica de la Unive
 respondiendo sobre las materias de la carrera.
 Responde conscisamente y con contexto a la pregunta.
 Utiliza el contexto para obtener informacion relevante a la pregunta.
+Responde siempre en esapñol.
 Si tu respuesta tiene items, formatealos como una lista para que puedan ser renderizados en un frontend react correctamente.
 Si no sabes la respuesta o te falta contexto, deci que no sabes.
 """
@@ -96,7 +97,9 @@ class VectorRetriever:
 
     def answer_with_rag(self, q):
         print("Finding similarities for query: ", q)
-        return self.chunk_retriever.invoke({"input": q})["answer"]
+        answer = self.chunk_retriever.invoke({"input": q})["answer"]
+        print("Answer: ", answer)
+        return answer
 
 
 

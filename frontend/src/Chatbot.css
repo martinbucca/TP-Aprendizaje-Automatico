@@ -63,6 +63,7 @@ body {
   
   .message.bot {
     align-self: flex-start;
+    white-space: pre-wrap;
     background-color: #e3f2fd; /* Azul claro */
     color: #0d47a1;
   }
