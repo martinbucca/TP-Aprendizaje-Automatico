@@ -243,7 +243,7 @@ const App = () => {
             className="clear-chat-button" 
             onClick={handleClearChat}
           >
-            <Trash size={20} /> Limpiar Chat
+            <Trash size={20} /> Limpiar
           </button>
         </div>
       </div>
