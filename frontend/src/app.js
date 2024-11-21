@@ -169,8 +169,7 @@ const App = () => {
   };
 
   const handleClearChat = () => {
-    setMessages([]);
-    setConversationHistory([]);
+    setUserInput('');
   };
 
   if (showWelcome) {
