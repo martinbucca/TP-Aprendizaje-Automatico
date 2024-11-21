@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Download, MessageCircleQuestion, History } from 'lucide-react';
+import { Download, MessageCircleQuestion, History, ArrowLeft, Trash } from 'lucide-react';
 
 const WelcomeScreen = ({ onStart }) => {
   const [name, setName] = useState('');
@@ -61,7 +61,7 @@ const App = () => {
   const getSuggestedQuestions = (year) => {
     const yearQuestions = {
       '1': [
-        '¿Cómo funciona el CBC?', 
+        '¿Cómo funciona el CBC?',
         'Materias recomendadas para primer año',
         'Información sobre inscripciones'
       ],
@@ -133,6 +133,7 @@ const App = () => {
   const handleStartChat = (userData) => {
     setUser(userData);
     setShowWelcome(false);
+    setFrequentQuestions(getSuggestedQuestions(userData.year));
   };
 
   const handleFrequentQuestionClick = (question) => {
@@ -145,6 +146,33 @@ const App = () => {
     handleSendMessage();
   };
 
+  const handleBackToWelcome = () => {
+    setUser(null);
+    setShowWelcome(true);
+  };
+
+  const getYearSuffix = (year) => {
+    switch (year) {
+      case '1':
+        return 'ro';
+      case '2':
+        return 'do';
+      case '3':
+        return 'ro';
+      case '4':
+        return 'to';
+      case '5':
+        return 'to';
+      default:
+        return '';
+    }
+  };
+
+  const handleClearChat = () => {
+    setMessages([]);
+    setConversationHistory([]);
+  };
+
   if (showWelcome) {
     return <WelcomeScreen onStart={handleStartChat} />;
   }
@@ -154,14 +182,19 @@ const App = () => {
       <div className="sidebar left-sidebar">
         <h3><MessageCircleQuestion size={20} /> Preguntas Frecuentes</h3>
         {frequentQuestions.map((q, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className="sidebar-item"
             onClick={() => handleFrequentQuestionClick(q)}
           >
             {q}
           </div>
         ))}
+        <div className="sidebar-footer">
+          <button className="back-button" onClick={handleBackToWelcome}>
+            <ArrowLeft size={20} /> Volver
+          </button>
+        </div>
       </div>
 
       <div className="chatbot-container">
@@ -169,7 +202,7 @@ const App = () => {
           <img src="/fiuba.png" alt="FIUBA Logo" className="fiuba-logo" />
           <h1 className="chatbot-title">FIUBA Chatbot</h1>
           <div className="welcome-user">
-            ¡Bienvenido/a, {user.name}! (Año: {user.year}to)
+            ¡Bienvenido/a, {user.name}! (Año: {user.year}{getYearSuffix(user.year)})
           </div>
           <button 
             className="download-report" 
@@ -206,6 +239,12 @@ const App = () => {
             rows={3}
           />
           <button onClick={handleSendMessage}>Enviar</button>
+          <button 
+            className="clear-chat-button" 
+            onClick={handleClearChat}
+          >
+            <Trash size={20} /> Limpiar Chat
+          </button>
         </div>
       </div>
 
