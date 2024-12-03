@@ -8,6 +8,18 @@
 
 
 
+## GraphRAG
+
+GraphRAG (Graph Retrieval-Augmented Generation) es una técnica avanzada que combina sistemas de búsqueda basada en grafos y modelos de lenguaje natural para responder a consultas complejas. La idea central es estructurar y almacenar información de manera semántica utilizando un grafo de conocimiento, mientras se emplean embeddings vectoriales para realizar búsquedas precisas y contextuales. Esta arquitectura tiene las siguientes ventajas:
+
+1. **Recuperación basada en contexto**: Permite buscar información no solo por palabras clave, sino también por relaciones semánticas y similitudes vectoriales, lo que mejora la precisión y relevancia de las respuestas.
+2. **Expansión del contexto**: Al extraer relaciones y entidades conectadas, se enriquece el contexto disponible para la generación de respuestas, proporcionando resultados más completos y útiles.
+3. **Escalabilidad**: La estructura basada en grafos es altamente eficiente para manejar datos complejos y altamente interrelacionados.
+4. **Explicabilidad**: El uso de grafos permite rastrear de manera explícita las conexiones entre la consulta del usuario y las respuestas generadas, aumentando la transparencia del sistema.
+5. **Interoperabilidad**: Facilita la integración de múltiples fuentes de datos estructurados y no estructurados, como documentos, bases de datos y sistemas externos.
+Con esta arquitectura, GraphRAG permite obtener respuestas precisas y contextualmente ricas para consultas en dominios complejos y densos en datos, como el análisis de documentos o el soporte técnico especializado.
+
+
 
 ## Creacion del grafo Neo4j
 1. Se cargan todos los documentos PDF que se encuentren en `./backend/documents`
