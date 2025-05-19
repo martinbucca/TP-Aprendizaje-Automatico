@@ -37,9 +37,8 @@ class KnowledgeGraphBuilder:
 
     def create_doc_transformer(self):
         '''
-        Create the LLM Graph Transformer: The LLMGraphTransformer converts 
-        text documents into structured graph documents by leveraging a LLM to parse and 
-        categorize entities and their relationships. 
+        Crea el transformador de documentos para convertir texto en entidades y relaciones de grafo.
+        El transformador de documentos utiliza un LLM para convertir texto en entidades y relaciones de grafo.
         https://python.langchain.com/v0.1/docs/use_cases/graph/constructing/#llm-graph-transformer
         '''
         #graph_transformer_prompt = default_prompt + [
@@ -52,6 +51,10 @@ class KnowledgeGraphBuilder:
         )   
         
     def empty_neo4j_database(self):
+        '''
+        Elimina todos los nodos y relaciones de la base de datos Neo4j.
+        '''
+
         self.graph.query("""
         MATCH (n)
         DETACH DELETE n;
@@ -63,19 +66,27 @@ class KnowledgeGraphBuilder:
         )
 
     def add_entities_and_relationships(self, chunk, chunk_id):
+        '''
+        Recibe un chunk de texto y su id, y genera entidades y relaciones a partir del texto (la funcion .convert_to_graph_documents).
+
+        El chunk de texto se convierte en un nodo de grafo con el id del chunk y el texto del chunk.
+
+        '''
         # Generate the entities and relationships from the chunk with LLM (converts text to graph entities and relationships)
         graph_docs = self.docs_transformer.convert_to_graph_documents([chunk])
 
-        # Map the entities in the graph documents to the chunk node with a relationship HAS_ENTITY
-        # going from the chunk node to the related entity nodes
+        # las entidades y relaciones generadas por la llm estan en graph_docs
         for graph_doc in graph_docs:
+            
+            # Creo un nodo de grafo para el chunk
             chunk_node = Node(
                 id=chunk_id,
                 type="Chunk"
             )
-
+            # Para cada entidad extraida del chunk
             for node in graph_doc.nodes:
-
+                # Agrego una relacion entre el chunk y la entidad
+                # chunk -[:HAS_ENTITY]-> entity
                 graph_doc.relationships.append(
                     Relationship(
                         source=chunk_node,
@@ -84,22 +95,26 @@ class KnowledgeGraphBuilder:
                         )
                     )
 
-        # add the graph documents to the graph
+        # Carga directamente los nodos y relaciones en la base de datos Neo4j
         self.graph.add_graph_documents(graph_docs)
 
 
     def process_chunk(self, chunk):
+        '''
+        Recibe un chunk de texto y lo procesa para agregarlo a la base de datos Neo4j.
+        '''
         filename = os.path.basename(chunk.metadata["source"])
         page = chunk.metadata["page"]
         chunk_id = f"{filename}.{page}"
         print("Processing -", chunk_id)
 
-        # Embed the chunk text content
+        # Se genera el vector embedding para el texto del chunk
         chunk_embedding = self.embedding_provider.embed_query(chunk.page_content)
 
-        # Add the Document and Chunk nodes to the graph and set the text embedding property
-        # Chunk -[:PART_OF]-> Document, where Document node has one single property: id (filename)
-        # and Chunk node has three properties: id (chunk_id), text (chunk.page_content) and textEmbedding (chunk_embedding)
+        # Agregar un nodo 'Document' y otro nodo 'Chunk' al grafo
+        # Se crea un nodo 'Document' con el id del archivo
+        # Se crea un nodo 'Chunk' con el id del chunk, el texto del chunk y el embedding del chunk
+        # Se crea una relacion entre el nodo 'Document' y el nodo 'Chunk' del tipo 'PART_OF'
         properties = {
             "filename": filename,
             "chunk_id": chunk_id,
@@ -107,7 +122,7 @@ class KnowledgeGraphBuilder:
             "embedding": chunk_embedding
         }
         
-        # Add Nodes and Relationships to the graph
+        # Agrega el nodo 'Document' y el nodo 'Chunk' al grafo junto con la relacion entre ellos
         self.graph.query("""
             MERGE (d:Document {id: $filename})
             MERGE (c:Chunk {id: $chunk_id})
@@ -118,12 +133,13 @@ class KnowledgeGraphBuilder:
             """, 
             properties
         )
-
+        # a cada chunk se le extraen entidades y relaciones entre las entidades y se conectan al chunk correspondiente
         self.add_entities_and_relationships(chunk, chunk_id)
         
 
     def create_vector_index(self):
-        # Create the vector index to query the chunks by their text embeddings
+        # Crea un vector index en la base de datos Neo4j para el campo 'textEmbedding' de los nodos 'Chunk'
+        # Este index se utiliza para realizar busquedas por similitud entre los chunks
         self.graph.query("""
             CREATE VECTOR INDEX `chunkVector`
             IF NOT EXISTS
